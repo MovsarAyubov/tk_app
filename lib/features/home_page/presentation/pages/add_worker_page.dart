@@ -4,10 +4,10 @@ import 'package:tk_app/core/widgets/custom_sized_box.dart';
 import 'package:tk_app/core/widgets/custom_text.dart';
 import 'package:tk_app/core/widgets/custom_text_field.dart';
 import 'package:tk_app/core/widgets/size_config.dart';
-import 'package:tk_app/features/home_page/presentation/cubits/foreman_page/foreman_page_cubit.dart';
+import 'package:tk_app/features/home_page/presentation/cubits/foreman_page/workers_cubit.dart';
 
 class AddWorkerPage extends StatefulWidget {
-  final ForemanPageCubit cubit;
+  final WorkersCubit cubit;
   const AddWorkerPage({super.key, required this.cubit});
 
   @override
@@ -33,7 +33,7 @@ class _AddWorkerPageState extends State<AddWorkerPage> {
               controller: lastNameController,
               hintText: "Фамилия",
               onChanged: (value) {
-                widget.cubit.workerModel.lastName = value ?? "";
+                widget.cubit.workerModel.name = value ?? "";
               },
             ),
             CustomTextField(
@@ -48,7 +48,7 @@ class _AddWorkerPageState extends State<AddWorkerPage> {
               hintText: "Отчество",
               onChanged: (value) {
                 
-                widget.cubit.workerModel.patronymic = value ?? "";
+                widget.cubit.workerModel.patronomic = value ?? "";
               },
             ),
             const Expanded(child: SizedBox()),
@@ -56,7 +56,8 @@ class _AddWorkerPageState extends State<AddWorkerPage> {
               onPressed: () {
                 if (formKey.currentState?.validate() !=true) 
                   {return;}
-                  widget.cubit.addNewUser();
+                  // ignore: use_build_context_synchronously
+                  widget.cubit.addWorker().then((value) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: CustomText(value, fontSize: 18, color: Colors.white,),)));
                   Navigator.pop(context);
               }, 
               style: ButtonStyle(backgroundColor: WidgetStateProperty.all(Colors.green)),

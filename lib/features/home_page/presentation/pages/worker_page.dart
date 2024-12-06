@@ -10,8 +10,8 @@ class WorkerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(title: "${worker.lastName} ${worker.firstName} ${worker.patronymic}",),
-      body: Placeholder(),
+      appBar: MyAppBar(title: "${worker.name} ${worker.firstName} ${worker.patronymic}",),
+      body: const Placeholder(),
     );
   }
 }

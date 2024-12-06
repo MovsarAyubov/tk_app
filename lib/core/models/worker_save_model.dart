@@ -1,11 +1,11 @@
 class WorkerSaveModel {
+  String name = "";
   String firstName = "";
-  String lastName = "";
-  String patronymic = "";
+  String patronomic = "";
   
   void firstLetterToUpperCase() {
+    name = name[0].toUpperCase() + name.substring(1);
     firstName = firstName[0].toUpperCase() + firstName.substring(1);
-    lastName = lastName[0].toUpperCase() + lastName.substring(1);
-    patronymic = patronymic[0].toUpperCase() + patronymic.substring(1);          
+    patronomic = patronomic[0].toUpperCase() + patronomic.substring(1);          
   }
 }

@@ -9,7 +9,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget{
   Widget build(BuildContext context) {
     return AppBar(
       
-        title: CustomText(title, color: Colors.white, fontSize: 24,),
+        title: CustomText(title, color: Colors.white, fontSize: 20,),
         centerTitle: true,
         backgroundColor: Colors.green,  // Changed to green
         elevation: 2,
