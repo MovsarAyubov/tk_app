@@ -38,10 +38,21 @@ class WorkersRepoImpl implements WorkersRepository {
     }
 
     }
+
+    
     
       @override
       List<Object?> get props => [sourse];
     
       @override
       bool? get stringify => throw UnimplementedError();
+      
+        @override
+        Future<void> deleteWorker({required int id}) async {
+          try {
+            await sourse.deleteWorker(id: id);
+        } on SocketException { 
+            throw(const SocketException("error"));
+    }
+        }
   }

@@ -8,9 +8,7 @@ import '../../../../core/error/failure.dart';
 
 
 abstract class WorkersRepository extends Equatable{
-  Future<Either<Failure, List<Worker>>> getAllWorkers(); 
-  Future<String> addNewWorker({required String name, required String firstName, required String patronomic});
-  Future<void> deleteWorker({required int id});
+  Future<Either<Failure, List<Worker>>> getTKInfo(); 
 }
 
 

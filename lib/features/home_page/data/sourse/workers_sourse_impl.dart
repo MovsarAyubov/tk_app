@@ -14,7 +14,7 @@ class WorkersSourseImpl implements WorkersSourse{
   WorkersSourseImpl(this.mainApi);
   @override
   Future<void> addNewWorker({required String name, required String firstName, required String patronomic}) async {
-    
+
       final response = await mainApi.client.post(
         Uri.parse("http://10.250.10.99:8000/api/v1/worker"),
         headers: {
@@ -54,5 +54,18 @@ class WorkersSourseImpl implements WorkersSourse{
      
       }
   }
-  
+
+  @override
+  Future<void> deleteWorker({required int id}) async{
+    await mainApi.client.delete(
+      Uri.parse("http://10.250.10.99:8000/api/v1/workers"),
+      headers: {
+          "Content-Type": "application/json",
+        },
+        body: json.encode({
+          "ID": id
+        }
+      ),
+    );
+  }
 }

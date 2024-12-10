@@ -18,6 +18,7 @@ import 'features/home_page/data/sourse/workers_sourse_impl.dart' as _i487;
 import 'features/home_page/domain/repositories/workers_repository.dart'
     as _i705;
 import 'features/home_page/domain/usecases/add_new_worker.dart' as _i998;
+import 'features/home_page/domain/usecases/delete_worker.dart' as _i495;
 import 'features/home_page/domain/usecases/get_all_workers.dart' as _i27;
 import 'features/home_page/presentation/cubits/cubit/cubit.dart' as _i531;
 import 'features/home_page/presentation/cubits/foreman_page/workers_cubit.dart'
@@ -44,9 +45,12 @@ extension GetItInjectableX on _i174.GetIt {
         _i998.AddNewWorker(workersRepository: gh<_i705.WorkersRepository>()));
     gh.lazySingleton<_i27.GetAllWorkers>(() =>
         _i27.GetAllWorkers(workersRepository: gh<_i705.WorkersRepository>()));
+    gh.lazySingleton<_i495.DeleteWorker>(() =>
+        _i495.DeleteWorker(workersRepository: gh<_i705.WorkersRepository>()));
     gh.lazySingleton<_i218.WorkersCubit>(() => _i218.WorkersCubit(
           getAllWorkers: gh<_i27.GetAllWorkers>(),
           addNewWorker: gh<_i998.AddNewWorker>(),
+          deleteWorker: gh<_i495.DeleteWorker>(),
         ));
     return this;
   }

@@ -16,6 +16,7 @@ class MyAlertDialog extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           TextButton(onPressed: () {Navigator.pop(context);}, child: const CustomText("Нет", fontSize: 18,)),
+          TextButton(onPressed: () {cubit.deleteOneWorker(id: worker.id); Navigator.pop(context);}, child: const CustomText("Да", fontSize: 18,)),
         ],
       ),
     );
