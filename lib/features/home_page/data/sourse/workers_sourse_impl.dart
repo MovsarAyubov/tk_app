@@ -6,6 +6,7 @@ import 'package:tk_app/core/error/exceptions.dart';
 import 'package:tk_app/core/error/failure.dart';
 import 'package:tk_app/features/home_page/data/models/worker.dart';
 
+import '../../../../core/api/endpoints.dart';
 import 'workers_sourse.dart';
 
 @LazySingleton(as: WorkersSourse)
@@ -16,8 +17,7 @@ class WorkersSourseImpl implements WorkersSourse{
   Future<void> addNewWorker({required String name, required String firstName, required String patronomic}) async {
 
       final response = await mainApi.client.post(
-        // Uri.parse("http://10.250.10.99:8000/api/v1/workers"),
-        Uri.parse("http://192.168.100.15:8000/api/v1/worker"),
+        Uri.parse(Endpoints.newWorker2),
         headers: {
           "Content-Type": "application/json",
         },
@@ -40,8 +40,7 @@ class WorkersSourseImpl implements WorkersSourse{
   Future<List<Worker>> getWorkers() async {
 
       final response = await mainApi.client.get(
-        // Uri.parse("http://10.250.10.99:8000/api/v1/workers"),
-        Uri.parse("http://192.168.100.15:8000/api/v1/workers")
+        Uri.parse(Endpoints.allWorkers2)
       );
       
       if (response.statusCode == 200) {
@@ -60,8 +59,7 @@ class WorkersSourseImpl implements WorkersSourse{
   @override
   Future<void> deleteWorker({required int id}) async{
     await mainApi.client.delete(
-      // Uri.parse("http://10.250.10.99:8000/api/v1/workers"),
-      Uri.parse("http://192.168.100.15:8000/api/v1/workers"),
+      Uri.parse(Endpoints.deleteWorker2),
       headers: {
           "Content-Type": "application/json",
         },

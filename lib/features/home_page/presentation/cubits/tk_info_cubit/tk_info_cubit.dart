@@ -9,7 +9,7 @@ import 'tk_info_state.dart';
 class TKInfoCubit extends Cubit<TKInfoState>{
   final GetTkInfo tkInfo;
 
-  TKInfoCubit(this.tkInfo) : super(EmptyState());
+  TKInfoCubit(this.tkInfo) : super(LoadingState());
   
   Future<void> getTkInfo() async {
     final response = await tkInfo();

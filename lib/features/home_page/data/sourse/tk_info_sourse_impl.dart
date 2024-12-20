@@ -15,7 +15,7 @@ class TkInfoSourseImpl implements TkInfoSourse {
   TkInfoSourseImpl(this.mainApi);
   @override
   Future<TKInfo> getTKInfo() async {
-    final response = await mainApi.client.get(Uri.parse(Endpoints.tKInfo)); 
+    final response = await mainApi.client.get(Uri.parse(Endpoints.tKInfo2)); 
     if(response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
       final TKInfo tkInfo = TKInfo.fromJson(jsonResponse);
