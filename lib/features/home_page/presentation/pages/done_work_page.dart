@@ -6,6 +6,7 @@ import 'package:tk_app/features/home_page/presentation/cubits/tk_info_cubit/tk_i
 
 import '../../../../setup.dart';
 import '../cubits/tk_info_cubit/tk_info_cubit.dart';
+import '../widgets/drop_down_button.dart';
 
 class DoneWorkPage extends StatefulWidget {
   const DoneWorkPage({super.key});
@@ -31,21 +32,25 @@ class _DoneWorkPageState extends State<DoneWorkPage> {
       builder: <TKInfoCubit, TKInfoState>(
       context, state) {
         if(state is SuccesState) {
-          final periods = state.typesOfWork.map((value) => value.name).toSet().toList();
+          final periods = state.typesOfWork.map((value) => value.period).toSet().toList();
           return  Scaffold(
             appBar: const MyAppBar(),
-            body: ListView.builder(
-            itemCount: periods.length,
-            itemBuilder: (context, index) => CustomText(periods[index].toString())));
+            body: Column(
+              children: [
+                MyDropDownButton(items: periods,),
+                MyDropDownButton(items: cubit.typesOfWorkByPeriod("state", state),),
+              ],
+            ));
+            
         }
         else if (state is EmptyState) {
-          return const Center(child: CustomText("Данные отсутствуют"),);
+          return const Scaffold(body: Center(child: CustomText("Данные отсутствуют"),));
         }
         else if (state is LoadingState) {
-          return const Center(child: CircularProgressIndicator());
+          return const Scaffold(body: Center(child: CircularProgressIndicator()));
         }
         else {
-          return const Center(child: CustomText("Ощибка сервера"),);
+          return const Scaffold(body: Center(child: CustomText("Сервер недоступен"),));
         }
              }
       );

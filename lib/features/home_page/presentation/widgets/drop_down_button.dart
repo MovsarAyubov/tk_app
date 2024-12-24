@@ -2,9 +2,11 @@
 import 'package:flutter/material.dart';
 
 class MyDropDownButton extends StatefulWidget {
+  
   final List<String> items;
   const MyDropDownButton({
     super.key,
+  
     required this.items,
   });
 
@@ -23,19 +25,23 @@ class _DropdownButtonExampleState extends State<MyDropDownButton> {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton(
-      value: dropdownValue,
-      elevation: 16,
-      items: widget.items.map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
-      onChanged: (value) {
-        setState(() {
-          dropdownValue = value!;
-        });
-      });
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: DropdownButton(
+        isExpanded: true,
+        value: dropdownValue,
+        elevation: 16,
+        items: widget.items.map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value, overflow: TextOverflow.ellipsis,),
+          );
+        }).toList(),
+        onChanged: (value) {
+          setState(() {
+            dropdownValue = value!;
+          });
+        }),
+    );
   }
 }

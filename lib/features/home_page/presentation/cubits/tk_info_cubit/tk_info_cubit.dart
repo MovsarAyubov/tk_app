@@ -15,5 +15,10 @@ class TKInfoCubit extends Cubit<TKInfoState>{
     final response = await tkInfo();
     response.fold((error) => emit(FailureState()), (tkInfo) => emit(SuccesState(tkInfo.cell, tkInfo.row, tkInfo.typesOfWork)));
   }
+
+  List<String> typesOfWorkByPeriod(String period, SuccesState state) {
+    List<String> works = state.typesOfWork.where((item) => item.period == period).toList().map((elem) => elem.name).toList();
+    return works;
+  }
   
   }

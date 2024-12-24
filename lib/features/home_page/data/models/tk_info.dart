@@ -9,11 +9,13 @@ class TKInfo {
   TKInfo(this.cell, this.row, this.typesOfWork);
   
   factory TKInfo.fromJson(Map<String, dynamic> json) {
-    var values = json['typesOfWork'] as List<dynamic>;
+    double number = 200;
+    print(number);
+    var values = json['typesOfWork'] == null ?  [] : json['typesOfWork'] as List<dynamic>;
     final List<TypeOfWork> typesOfWork = values.map((value) => TypeOfWork.fromJson(value)).toList();
-    values = json['row'] as List<dynamic>;
+    values = json['row'] == null ? [] : json['row'] as List<dynamic>;
     final rows = values.map((value) => Row.fromJson(value)).toList();
-    values = json['cell'] as List<dynamic>;
+    values = json['cell'] == null ? [] : json['cell'] as List<dynamic>;
     final List<int> cells = []; 
     for (var value in values) {
       cells.add(value);
@@ -27,13 +29,13 @@ class TKInfo {
     final int id;
     final String name;
     final String uom;
-    final int price;
+    final double price;
     final String period;
 
   TypeOfWork(this.id, this.name, this.uom, this.price, this.period);
 
     factory TypeOfWork.fromJson(Map<String, dynamic> json) {
-      return TypeOfWork(json['id'], json['name'], json['uom'], json['price'], json['period']);
+      return TypeOfWork(json['id'], json['name'], json['uom'], double.parse(json['price'].toString()), json['period']);
     }
   }
 
