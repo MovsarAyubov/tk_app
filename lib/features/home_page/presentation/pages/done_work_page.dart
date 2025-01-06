@@ -5,8 +5,11 @@ import 'package:tk_app/core/widgets/custom_text.dart';
 import 'package:tk_app/features/home_page/presentation/cubits/tk_info_cubit/tk_info_state.dart';
 
 import '../../../../setup.dart';
+import '../cubits/drop_down_button_cubit/drop_down_button_cubit.dart';
+import '../cubits/drop_down_button_cubit/drop_down_button_state.dart';
 import '../cubits/tk_info_cubit/tk_info_cubit.dart';
-import '../widgets/drop_down_button.dart';
+import '../widgets/drop_down_button_one.dart';
+import '../widgets/drop_down_button_two.dart';
 
 class DoneWorkPage extends StatefulWidget {
   const DoneWorkPage({super.key});
@@ -18,29 +21,57 @@ class DoneWorkPage extends StatefulWidget {
 class _DoneWorkPageState extends State<DoneWorkPage> {
   
   final TKInfoCubit cubit = getIt<TKInfoCubit>();
+  final DropDownButtonCubit dropDownButtonCubit = getIt<DropDownButtonCubit>();
+  get periods => dropDownButtonCubit.state.periods;
+  get works => dropDownButtonCubit.state.works.map((item) => item.name).toList();
 
   @override
   void initState() {
-    cubit.getTkInfo();
+    cubit.fetchPeriods();
     super.initState();
   }
   
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder(
+    return BlocBuilder<TKInfoCubit, TKInfoState>(
       bloc: cubit,
-      builder: <TKInfoCubit, TKInfoState>(
+      builder: (
       context, state) {
         if(state is SuccesState) {
-          final periods = state.typesOfWork.map((value) => value.period).toSet().toList();
           return  Scaffold(
             appBar: const MyAppBar(),
-            body: Column(
-              children: [
-                MyDropDownButton(items: periods,),
-                MyDropDownButton(items: cubit.typesOfWorkByPeriod("state", state),),
-              ],
-            ));
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Column(
+                children: [
+                  BlocBuilder<DropDownButtonCubit, DropDownButtonState>(
+                    bloc: dropDownButtonCubit,
+                    builder: (context, state) {
+                      return MyDropDownButtonOne(dropDownButtonCubit: dropDownButtonCubit, cubit: cubit, items: periods as List<String>);
+                    }),
+                    BlocBuilder<DropDownButtonCubit, DropDownButtonState>(
+                    bloc: dropDownButtonCubit,
+                    builder: (context, state) {
+                      if(state.selectedPeriod != "") {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          MyDropDownButtonTwo(works: works, cubit: dropDownButtonCubit),
+                          CustomText("Стоимость работы: ${state.selectedTypeOfWork.price.toString()} рублей", fontSize: 18,), 
+                          const Divider(),
+                          CustomText("Единица измерения работы: ${state.selectedTypeOfWork.uom.toString()}", fontSize: 18,), 
+                          const Divider(),
+                        ],
+                      );
+                      }
+                      else {
+                        return const SizedBox();
+                      }
+                    })                           
+                ],
+              ),
+            ),
+          );
             
         }
         else if (state is EmptyState) {

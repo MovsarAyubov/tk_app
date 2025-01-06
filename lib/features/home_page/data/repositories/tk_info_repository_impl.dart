@@ -21,5 +21,26 @@ class TkInfoRepositoryImpl implements TkInfoRepository{
       return const Left(ServerFailure());
     }
   }
+  
+  @override
+  Future<Either<Failure, Set<String>>> getPeriods() async {
+    try {
+      final response = await sourse.getPeriods();
+      return Right(response);
+    } catch (e) {
+      return const Left(ServerFailure());
+    }
+  }
+  
+  @override
+  Future<Either<Failure, List<TypeOfWork>>> getWorkByPeriod(String period) async {
+    try {
+      final response = await sourse.getWorkByPeriod(period);
+      return Right(response);
+    } catch (e) {
+      return const Left(ServerFailure());
+    }
+  }
+ 
 
 }

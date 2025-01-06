@@ -25,4 +25,30 @@ class TkInfoSourseImpl implements TkInfoSourse {
       throw ServerException();
      } 
   }
+  @override
+  Future<Set<String>> getPeriods() async {
+    final response = await mainApi.client.get(Uri.parse(Endpoints.getPeriods)); 
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      final periods = (jsonResponse['period'] as List<dynamic>).map((item) => item.toString()).toSet();
+      return periods;
+    }
+  else {
+    throw ServerException();
+  }
+    
+}
+
+  @override
+  Future<List<TypeOfWork>> getWorkByPeriod(String period) async {
+        final response = await mainApi.client.get(Uri.parse("${Endpoints.getWorkByPeriod}?period=$period")); 
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      final works = (jsonResponse['work'] as List<dynamic>).map((item) => TypeOfWork.fromJson(item)).toList();
+      return works;
+    }
+  else {
+    throw ServerException();
+  }
+  }
 }

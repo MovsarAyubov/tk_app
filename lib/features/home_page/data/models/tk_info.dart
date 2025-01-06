@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:equatable/equatable.dart';
+
 class TKInfo {
   final List<int> cell;
   final List<Row> row;
@@ -9,8 +11,6 @@ class TKInfo {
   TKInfo(this.cell, this.row, this.typesOfWork);
   
   factory TKInfo.fromJson(Map<String, dynamic> json) {
-    double number = 200;
-    print(number);
     var values = json['typesOfWork'] == null ?  [] : json['typesOfWork'] as List<dynamic>;
     final List<TypeOfWork> typesOfWork = values.map((value) => TypeOfWork.fromJson(value)).toList();
     values = json['row'] == null ? [] : json['row'] as List<dynamic>;
@@ -25,18 +25,29 @@ class TKInfo {
 
   }
 
-  class TypeOfWork {
+class TypeOfWork extends Equatable {
     final int id;
     final String name;
     final String uom;
     final double price;
     final String period;
 
-  TypeOfWork(this.id, this.name, this.uom, this.price, this.period);
+  const TypeOfWork(this.id, this.name, this.uom, this.price, this.period);
 
     factory TypeOfWork.fromJson(Map<String, dynamic> json) {
       return TypeOfWork(json['id'], json['name'], json['uom'], double.parse(json['price'].toString()), json['period']);
     }
+    
+      @override
+  List<Object> get props {
+    return [
+      id,
+      name,
+      uom,
+      price,
+      period,
+    ];
+  }
   }
 
 class Row {

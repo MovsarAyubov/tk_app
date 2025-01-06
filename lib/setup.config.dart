@@ -26,8 +26,12 @@ import 'features/home_page/domain/repositories/workers_repository.dart'
 import 'features/home_page/domain/usecases/add_new_worker.dart' as _i998;
 import 'features/home_page/domain/usecases/delete_worker.dart' as _i495;
 import 'features/home_page/domain/usecases/get_all_workers.dart' as _i27;
+import 'features/home_page/domain/usecases/get_periods.dart' as _i672;
 import 'features/home_page/domain/usecases/get_tk_info.dart' as _i301;
+import 'features/home_page/domain/usecases/get_works_by_period.dart' as _i885;
 import 'features/home_page/presentation/cubits/cubit/cubit.dart' as _i531;
+import 'features/home_page/presentation/cubits/drop_down_button_cubit/drop_down_button_cubit.dart'
+    as _i487;
 import 'features/home_page/presentation/cubits/foreman_page/workers_cubit.dart'
     as _i218;
 import 'features/home_page/presentation/cubits/tk_info_cubit/tk_info_cubit.dart'
@@ -46,16 +50,20 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i531.Cubit>(() => _i531.Cubit());
     gh.lazySingleton<_i767.MainApi>(() => _i767.MainApi());
+    gh.lazySingleton<_i487.DropDownButtonCubit>(
+        () => _i487.DropDownButtonCubit());
     gh.lazySingleton<_i1034.WorkersSourse>(
         () => _i487.WorkersSourseImpl(gh<_i767.MainApi>()));
     gh.lazySingleton<_i136.TkInfoSourse>(
         () => _i609.TkInfoSourseImpl(gh<_i767.MainApi>()));
     gh.lazySingleton<_i180.TkInfoRepository>(
         () => _i304.TkInfoRepositoryImpl(gh<_i136.TkInfoSourse>()));
+    gh.lazySingleton<_i672.GetPeriods>(
+        () => _i672.GetPeriods(tkInfoRepository: gh<_i180.TkInfoRepository>()));
     gh.lazySingleton<_i301.GetTkInfo>(
         () => _i301.GetTkInfo(tkInfoRepository: gh<_i180.TkInfoRepository>()));
-    gh.lazySingleton<_i912.TKInfoCubit>(
-        () => _i912.TKInfoCubit(gh<_i301.GetTkInfo>()));
+    gh.lazySingleton<_i885.GetWorkByPeriod>(() =>
+        _i885.GetWorkByPeriod(tkInfoRepository: gh<_i180.TkInfoRepository>()));
     gh.lazySingleton<_i705.WorkersRepository>(
         () => _i965.WorkersRepoImpl(gh<_i1034.WorkersSourse>()));
     gh.lazySingleton<_i998.AddNewWorker>(() =>
@@ -64,6 +72,12 @@ extension GetItInjectableX on _i174.GetIt {
         _i495.DeleteWorker(workersRepository: gh<_i705.WorkersRepository>()));
     gh.lazySingleton<_i27.GetAllWorkers>(() =>
         _i27.GetAllWorkers(workersRepository: gh<_i705.WorkersRepository>()));
+    gh.lazySingleton<_i912.TKInfoCubit>(() => _i912.TKInfoCubit(
+          gh<_i487.DropDownButtonCubit>(),
+          gh<_i885.GetWorkByPeriod>(),
+          gh<_i672.GetPeriods>(),
+          gh<_i301.GetTkInfo>(),
+        ));
     gh.lazySingleton<_i218.WorkersCubit>(() => _i218.WorkersCubit(
           getAllWorkers: gh<_i27.GetAllWorkers>(),
           addNewWorker: gh<_i998.AddNewWorker>(),

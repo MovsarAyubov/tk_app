@@ -17,7 +17,7 @@ class WorkersSourseImpl implements WorkersSourse{
   Future<void> addNewWorker({required String name, required String firstName, required String patronomic}) async {
 
       final response = await mainApi.client.post(
-        Uri.parse(Endpoints.newWorker2),
+        Uri.parse(Endpoints.newWorker1),
         headers: {
           "Content-Type": "application/json",
         },
