@@ -30,21 +30,21 @@ class _AddWorkerPageState extends State<AddWorkerPage> {
         child: Column(
           children: [
             CustomTextField(
-              controller: lastNameController,
+              
               hintText: "Фамилия",
               onChanged: (value) {
                 widget.cubit.workerModel.firstName = value ?? "";
               },
             ),
             CustomTextField(
-              controller: firstNameController,
+              
               hintText: "Имя", 
               onChanged: (value) {
                 widget.cubit.workerModel.name = value ?? "";
               },
             ),
             CustomTextField(
-              controller: patronomycController,
+              
               hintText: "Отчество",
               onChanged: (value) {
                 

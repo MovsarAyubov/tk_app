@@ -1,12 +1,16 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:tk_app/core/models/additional_parametrs_model.dart';
+import 'package:tk_app/core/models/done_work_model.dart';
 import 'package:tk_app/features/home_page/data/models/tk_info.dart';
 
 import 'drop_down_button_state.dart';
 
 @LazySingleton()
 class DropDownButtonCubit extends Cubit<DropDownButtonState> {
+  final AdditionalParametrsModel additionalParameters = AdditionalParametrsModel();
+  final DoneWorkModel doneWork = DoneWorkModel(rowId: [], cellId:  []);
   DropDownButtonCubit() : super(const DropDownButtonState(periods: [], selectedPeriod:  "", works:  [], selectedTypeOfWork: TypeOfWork(0, "", "uom", 0, '')));
 
   void selectPeriod(String value) {

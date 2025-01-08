@@ -4,7 +4,7 @@ import '../../../../core/widgets/custom_sized_box.dart';
 import '../../../../setup.dart';
 import '../../data/models/worker.dart';
 import '../cubits/foreman_page/workers_cubit.dart';
-import '../pages/worker_page.dart';
+import '../pages/done_work_page.dart';
 
 class WorkerCard extends StatefulWidget {
   final Worker worker;
@@ -25,7 +25,7 @@ class _WorkerCardState extends State<WorkerCard> {
         showDialog(context: context, builder: (BuildContext context) => MyAlertDialog(cubit: cubit, worker: widget.worker));
       },
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => WorkerPage(worker: widget.worker)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => DoneWorkPage(worker: widget.worker,)));
       },
       child: Column(
         children: [

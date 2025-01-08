@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:tk_app/core/widgets/size_config.dart';
 
 class CustomTextField extends StatelessWidget {
+  final TextInputType textInputType;
   final String hintText; 
-  final TextEditingController controller;
   final void Function(String?)? onChanged;
-  const CustomTextField({super.key, required this.hintText, required this.controller, required this.onChanged});
+  const CustomTextField({super.key, this.textInputType = TextInputType.text, required this.hintText, required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextFormField(
-        controller: controller,
+        keyboardType: textInputType,
         decoration: InputDecoration(
           hintText: hintText,
           contentPadding: EdgeInsets.symmetric(horizontal: SizeConfig(context, 4).getProportionateScreenWidth),
