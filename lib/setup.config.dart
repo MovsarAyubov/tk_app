@@ -23,6 +23,7 @@ import 'features/home_page/domain/repositories/tk_info_repository.dart'
     as _i180;
 import 'features/home_page/domain/repositories/workers_repository.dart'
     as _i705;
+import 'features/home_page/domain/usecases/add_done_work.dart' as _i63;
 import 'features/home_page/domain/usecases/add_new_worker.dart' as _i998;
 import 'features/home_page/domain/usecases/delete_worker.dart' as _i495;
 import 'features/home_page/domain/usecases/get_all_workers.dart' as _i27;
@@ -64,6 +65,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i301.GetTkInfo(tkInfoRepository: gh<_i180.TkInfoRepository>()));
     gh.lazySingleton<_i885.GetWorkByPeriod>(() =>
         _i885.GetWorkByPeriod(tkInfoRepository: gh<_i180.TkInfoRepository>()));
+    gh.lazySingleton<_i63.AddDoneWork>(
+        () => _i63.AddDoneWork(tkInfoRepository: gh<_i180.TkInfoRepository>()));
     gh.lazySingleton<_i705.WorkersRepository>(
         () => _i965.WorkersRepoImpl(gh<_i1034.WorkersSourse>()));
     gh.lazySingleton<_i998.AddNewWorker>(() =>
@@ -73,6 +76,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i27.GetAllWorkers>(() =>
         _i27.GetAllWorkers(workersRepository: gh<_i705.WorkersRepository>()));
     gh.lazySingleton<_i912.TKInfoCubit>(() => _i912.TKInfoCubit(
+          gh<_i63.AddDoneWork>(),
           gh<_i487.DropDownButtonCubit>(),
           gh<_i885.GetWorkByPeriod>(),
           gh<_i672.GetPeriods>(),

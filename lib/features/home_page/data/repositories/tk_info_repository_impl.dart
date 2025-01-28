@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tk_app/core/error/failure.dart';
+import 'package:tk_app/core/models/done_work_model.dart';
 import 'package:tk_app/features/home_page/data/models/tk_info.dart';
 import 'package:tk_app/features/home_page/data/sourse/tk_info_sourse.dart';
 import 'package:tk_app/features/home_page/domain/repositories/tk_info_repository.dart';
@@ -42,5 +43,14 @@ class TkInfoRepositoryImpl implements TkInfoRepository{
     }
   }
  
+  @override
+  Future<String> addDoneWork(DoneWorkModel doneWork) async {
+    try {
+      final response = await sourse.addDoneWork(doneWork);
+      return response;
+    } catch (e) {
+      return e.toString();
+    }
+  }
 
 }

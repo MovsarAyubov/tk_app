@@ -1,13 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
-import 'package:tk_app/features/home_page/presentation/cubits/drop_down_button_cubit/drop_down_button_cubit.dart';
+import 'package:tk_app/features/home_page/presentation/cubits/tk_info_cubit/tk_info_cubit.dart';
 
 import '../../../../core/widgets/size_config.dart';
 
 class OtherJobWidget extends StatefulWidget {
   final String uom;
-  final DropDownButtonCubit cubit;
+  final TKInfoCubit cubit;
   const OtherJobWidget({
     super.key,
     required this.uom,

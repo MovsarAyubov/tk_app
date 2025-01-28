@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 
 class TKInfo {
   final List<int> cell;
-  final List<Row> row;
+  final List<UomRow> row;
   final List<TypeOfWork> typesOfWork;
 
 
@@ -14,7 +14,7 @@ class TKInfo {
     var values = json['typesOfWork'] == null ?  [] : json['typesOfWork'] as List<dynamic>;
     final List<TypeOfWork> typesOfWork = values.map((value) => TypeOfWork.fromJson(value)).toList();
     values = json['row'] == null ? [] : json['row'] as List<dynamic>;
-    final rows = values.map((value) => Row.fromJson(value)).toList();
+    final rows = values.map((value) => UomRow.fromJson(value)).toList();
     values = json['cell'] == null ? [] : json['cell'] as List<dynamic>;
     final List<int> cells = []; 
     for (var value in values) {
@@ -50,15 +50,15 @@ class TypeOfWork extends Equatable {
   }
   }
 
-class Row {
+class UomRow {
     final int id;
     final int cellId;
-  Row({
+  UomRow({
     required this.id,
     required this.cellId,
   });
 
-  factory Row.fromJson(Map<String, dynamic> json) {
-    return Row(id: json['id'], cellId:  json['cellId']);
+  factory UomRow.fromJson(Map<String, dynamic> json) {
+    return UomRow(id: json['id'], cellId:  json['cellId']);
   }
   }

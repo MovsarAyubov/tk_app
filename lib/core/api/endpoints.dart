@@ -7,6 +7,7 @@ class Endpoints {
   static String deleteWorker2 = "http://10.250.10.99:8000/api/v1/workers";
   static String tKInfo1 = "http://192.168.100.15:8000/api/v1/tk_info";
   static String tKInfo2 = "http://10.250.10.99:8000/api/v1/tk_info";
+  static String addDoneWork = "http://10.250.10.99:8000/api/v1/add_done_work";
   static String getPeriods = "http://10.250.10.99:8000/api/v1/periods";
   static String getWorkByPeriod = "http://10.250.10.99:8000/api/v1/works";
   

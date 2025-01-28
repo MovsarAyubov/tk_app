@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:injectable/injectable.dart';
 import 'package:tk_app/core/api/main_api.dart';
 import 'package:tk_app/core/error/exceptions.dart';
+import 'package:tk_app/core/error/failure.dart';
+import 'package:tk_app/core/models/done_work_model.dart';
 import 'package:tk_app/features/home_page/data/models/tk_info.dart';
 
 import '../../../../core/api/endpoints.dart';
@@ -50,5 +52,30 @@ class TkInfoSourseImpl implements TkInfoSourse {
   else {
     throw ServerException();
   }
+  }
+
+  @override
+  Future<String> addDoneWork(DoneWorkModel doneWork) async {
+    final response = await mainApi.client.post(Uri.parse(Endpoints.addDoneWork), 
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: json.encode({
+          "workerId" : doneWork.workerId,
+          "typeOfWorkId": doneWork.typeOfWorkId,
+          "date" : doneWork.date.toString(),
+          "cellId" : doneWork.cellId, 
+          "rowId" : 0,
+          "count" : doneWork.count,
+          "income" : doneWork.income,
+        }),
+    );
+    if (response.statusCode == 400) {
+      throw const ServerFailure();
+    }
+    else {
+      return response.statusCode.toString();
+    }
+    
   }
 }
