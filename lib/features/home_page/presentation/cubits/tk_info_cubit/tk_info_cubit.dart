@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'package:decimal/decimal.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tk_app/core/models/additional_parametrs_model.dart';
@@ -57,23 +58,25 @@ class TKInfoCubit extends Cubit<TKInfoState> {
    } 
 
    Future<void> addNewDoneWork() async {
-    final response = await addDoneWork(doneWork);
+    await addDoneWork(doneWork);
     doneWork = DoneWorkModel();
-    if(response == "200") {
-      print("Success!");
-    }
-    else {
-      print("Failure");
-    }
+
    }
 
    void calculateIncomeForHarvesting () {
-    double income = cubit.state.selectedTypeOfWork.price * (additionalParametrs.totalWeight - (additionalParametrs.weightOfPallet + additionalParametrs.weigthOfBox / 1000 * additionalParametrs.boxesCount));
-    doneWork.income = income;
+    String income = (cubit.state.selectedTypeOfWork.price * (additionalParametrs.totalWeight - (additionalParametrs.weightOfPallet + additionalParametrs.weigthOfBox / 1000 * additionalParametrs.boxesCount))).toString();
+    doneWork.income = Decimal.parse(income).round(scale: 2);
   }
 
-  double calculateCount () {
-    return additionalParametrs.totalWeight - (additionalParametrs.weightOfPallet + additionalParametrs.weigthOfBox / 1000 * additionalParametrs.boxesCount);
+  Decimal calculateCount () {
+    Decimal count = Decimal.parse((additionalParametrs.totalWeight - (additionalParametrs.weightOfPallet + additionalParametrs.weigthOfBox / 1000 * additionalParametrs.boxesCount)).toString());
+    return count.round(scale: 2);
+  }
+
+  void calculateIncome() {
+    Decimal income = Decimal.parse(cubit.state.selectedTypeOfWork.price.toString()) * doneWork.count;
+    doneWork.income = income.round(scale: 2);
+    
   }
 
   }

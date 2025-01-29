@@ -47,5 +47,8 @@ void getSelectedWork(List<TypeOfWork> typesOfWork) {
     emit(DropDownButtonState(periods: periods, selectedPeriod: state.selectedPeriod, works: state.works, selectedTypeOfWork: state.selectedTypeOfWork));
   }
 
+  void resetSelectedWork() {
+    emit(DropDownButtonState(periods: state.periods, selectedPeriod:  "", works:  state.works , selectedTypeOfWork:  state.selectedTypeOfWork));
+  }
 
 }

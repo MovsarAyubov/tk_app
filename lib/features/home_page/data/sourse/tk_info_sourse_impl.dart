@@ -55,7 +55,7 @@ class TkInfoSourseImpl implements TkInfoSourse {
   }
 
   @override
-  Future<String> addDoneWork(DoneWorkModel doneWork) async {
+  Future<String> addDoneWork(DoneWorkModel  doneWork) async {
     final response = await mainApi.client.post(Uri.parse(Endpoints.addDoneWork), 
         headers: {
           "Content-Type": "application/json",
@@ -65,7 +65,7 @@ class TkInfoSourseImpl implements TkInfoSourse {
           "typeOfWorkId": doneWork.typeOfWorkId,
           "date" : doneWork.date.toString(),
           "cellId" : doneWork.cellId, 
-          "rowId" : 0,
+          "rowId" : doneWork.rowId,
           "count" : doneWork.count,
           "income" : doneWork.income,
         }),
