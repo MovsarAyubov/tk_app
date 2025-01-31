@@ -14,6 +14,7 @@ import '../cubits/tk_info_cubit/tk_info_cubit.dart';
 import '../widgets/drop_down_button_one.dart';
 import '../widgets/drop_down_button_two.dart';
 import '../widgets/row_uom_widget.dart';
+import 'done_works_history_page.dart';
 
 class DoneWorkPage extends StatefulWidget {
   final Worker worker;
@@ -48,6 +49,7 @@ class _DoneWorkPageState extends State<DoneWorkPage> {
       context, state) {
         if(state is SuccesState) {
           return  Scaffold(
+            floatingActionButton: FloatingActionButton(onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (_) => DoneWorksHistoryPage(dDBCubit: dropDownButtonCubit, cubit: cubit, worker: widget.worker,)));}, child: const Icon(Icons.history),),
             resizeToAvoidBottomInset : true,
             appBar: MyAppBar(title: "${widget.worker.firstName} ${widget.worker.name} ${widget.worker.patronymic}",),
             body: SingleChildScrollView(

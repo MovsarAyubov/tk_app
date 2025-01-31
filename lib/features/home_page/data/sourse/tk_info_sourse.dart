@@ -6,4 +6,5 @@ abstract class TkInfoSourse {
   Future<Set<String>> getPeriods();
   Future<List<TypeOfWork>> getWorkByPeriod(String period);
   Future<String> addDoneWork(DoneWorkModel doneWork);
+  Future<List<Map<String, dynamic>>> getDoneWorksByWorkerId(int workerid);
 }

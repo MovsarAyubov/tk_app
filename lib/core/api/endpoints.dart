@@ -10,5 +10,6 @@ class Endpoints {
   static String addDoneWork = "http://10.250.10.99:8000/api/v1/add_done_work";
   static String getPeriods = "http://10.250.10.99:8000/api/v1/periods";
   static String getWorkByPeriod = "http://10.250.10.99:8000/api/v1/works";
+  static String fetchDoneWorksByWorkerId = "http://10.250.10.99:8000/api/v1/fetch_done_works_by_worker_id";
   
 }

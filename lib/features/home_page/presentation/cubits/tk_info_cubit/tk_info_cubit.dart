@@ -5,7 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tk_app/core/models/additional_parametrs_model.dart';
 import 'package:tk_app/core/models/done_work_model.dart';
+import 'package:tk_app/features/home_page/data/models/done_work.dart';
 import 'package:tk_app/features/home_page/domain/usecases/add_done_work.dart';
+import 'package:tk_app/features/home_page/domain/usecases/get_done_works_by_worker_id.dart';
 
 import 'package:tk_app/features/home_page/domain/usecases/get_periods.dart';
 import 'package:tk_app/features/home_page/domain/usecases/get_works_by_period.dart';
@@ -18,6 +20,7 @@ import 'tk_info_state.dart';
 class TKInfoCubit extends Cubit<TKInfoState> {
   DoneWorkModel doneWork = DoneWorkModel();
   final AdditionalParametrsModel additionalParametrs = AdditionalParametrsModel(); 
+  final GetDoneWorksByWorkerId getDoneWorksByWorkerIdcase;
   final AddDoneWork addDoneWork;
   final DropDownButtonCubit cubit;
   final GetWorkByPeriod getWorkByPeriod;
@@ -25,6 +28,7 @@ class TKInfoCubit extends Cubit<TKInfoState> {
   final GetTkInfo tkInfo;
 
   TKInfoCubit(
+    this.getDoneWorksByWorkerIdcase,
     this.addDoneWork,
     this.cubit,
     this.getWorkByPeriod,
@@ -79,4 +83,14 @@ class TKInfoCubit extends Cubit<TKInfoState> {
     
   }
 
+  Future<List<Map<String, dynamic>>> getDoneWorksByWorkerId(int workerId) async {
+    emit(LoadingState());
+    List<Map<String, dynamic>> doneWorkss = [];
+    final response = await getDoneWorksByWorkerIdcase(workerId);
+    response.fold((value) => emit(EmptyState()), (doneWorks) {
+      emit(SuccesState());
+      doneWorkss = doneWorks;
+    });
+    return doneWorkss;
+  }
   }

@@ -19,3 +19,5 @@ class DoneWorkModel {
     this.rowId = 0,
   }) : count = Decimal.fromInt(0), income = Decimal.fromInt(0);
 }
+
+

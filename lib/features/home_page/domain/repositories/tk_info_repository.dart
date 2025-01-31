@@ -11,6 +11,7 @@ abstract class TkInfoRepository{
   Future<Either<Failure, Set<String>>> getPeriods();
   Future<Either<Failure, List<TypeOfWork>>> getWorkByPeriod(String period);
   Future<String> addDoneWork(DoneWorkModel doneWork);
+  Future<Either<Failure, List<Map<String, dynamic>>>> getDoneWorksByWorkerId(int workerID);
 }
 
 

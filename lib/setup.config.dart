@@ -27,6 +27,8 @@ import 'features/home_page/domain/usecases/add_done_work.dart' as _i63;
 import 'features/home_page/domain/usecases/add_new_worker.dart' as _i998;
 import 'features/home_page/domain/usecases/delete_worker.dart' as _i495;
 import 'features/home_page/domain/usecases/get_all_workers.dart' as _i27;
+import 'features/home_page/domain/usecases/get_done_works_by_worker_id.dart'
+    as _i122;
 import 'features/home_page/domain/usecases/get_periods.dart' as _i672;
 import 'features/home_page/domain/usecases/get_tk_info.dart' as _i301;
 import 'features/home_page/domain/usecases/get_works_by_period.dart' as _i885;
@@ -59,14 +61,16 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i609.TkInfoSourseImpl(gh<_i767.MainApi>()));
     gh.lazySingleton<_i180.TkInfoRepository>(
         () => _i304.TkInfoRepositoryImpl(gh<_i136.TkInfoSourse>()));
+    gh.lazySingleton<_i122.GetDoneWorksByWorkerId>(
+        () => _i122.GetDoneWorksByWorkerId(gh<_i180.TkInfoRepository>()));
+    gh.lazySingleton<_i63.AddDoneWork>(
+        () => _i63.AddDoneWork(tkInfoRepository: gh<_i180.TkInfoRepository>()));
     gh.lazySingleton<_i672.GetPeriods>(
         () => _i672.GetPeriods(tkInfoRepository: gh<_i180.TkInfoRepository>()));
     gh.lazySingleton<_i301.GetTkInfo>(
         () => _i301.GetTkInfo(tkInfoRepository: gh<_i180.TkInfoRepository>()));
     gh.lazySingleton<_i885.GetWorkByPeriod>(() =>
         _i885.GetWorkByPeriod(tkInfoRepository: gh<_i180.TkInfoRepository>()));
-    gh.lazySingleton<_i63.AddDoneWork>(
-        () => _i63.AddDoneWork(tkInfoRepository: gh<_i180.TkInfoRepository>()));
     gh.lazySingleton<_i705.WorkersRepository>(
         () => _i965.WorkersRepoImpl(gh<_i1034.WorkersSourse>()));
     gh.lazySingleton<_i998.AddNewWorker>(() =>
@@ -76,6 +80,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i27.GetAllWorkers>(() =>
         _i27.GetAllWorkers(workersRepository: gh<_i705.WorkersRepository>()));
     gh.lazySingleton<_i912.TKInfoCubit>(() => _i912.TKInfoCubit(
+          gh<_i122.GetDoneWorksByWorkerId>(),
           gh<_i63.AddDoneWork>(),
           gh<_i487.DropDownButtonCubit>(),
           gh<_i885.GetWorkByPeriod>(),

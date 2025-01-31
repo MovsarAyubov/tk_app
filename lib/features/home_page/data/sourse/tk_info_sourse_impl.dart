@@ -5,6 +5,7 @@ import 'package:tk_app/core/api/main_api.dart';
 import 'package:tk_app/core/error/exceptions.dart';
 import 'package:tk_app/core/error/failure.dart';
 import 'package:tk_app/core/models/done_work_model.dart';
+import 'package:tk_app/features/home_page/data/models/done_work.dart';
 import 'package:tk_app/features/home_page/data/models/tk_info.dart';
 
 import '../../../../core/api/endpoints.dart';
@@ -77,5 +78,20 @@ class TkInfoSourseImpl implements TkInfoSourse {
       return response.statusCode.toString();
     }
     
+  }
+  
+  @override
+  Future<List<Map<String, dynamic>>> getDoneWorksByWorkerId(int workerid) async {
+    
+    final response = await mainApi.client.get(Uri.parse("${Endpoints.fetchDoneWorksByWorkerId}?workerId=$workerid")); 
+    
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      final doneWorks = jsonResponse['items'] as List<dynamic>;
+      return doneWorks.map((item) => item as Map<String, dynamic>).toList();
+    }
+  else {
+    throw ServerException();
+  }
   }
 }
