@@ -30,6 +30,7 @@ class WorkersCubit extends Cubit<WorkersState> {
 
   Future<void> getListOfWorkers() async {
     final response = await getAllWorkers();
+    emit(LoadingState());
     response.fold((error) => emit(ErrorState(error.errorText)), (workers) => emit(SuccessState(workers: workers)));
   }
 

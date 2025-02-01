@@ -43,7 +43,7 @@ class _ForemanPageState extends State<ForemanPage> {
           }
           else {
             return FloatingActionButton(
-            onPressed: () {workersCubit.getAllWorkers();}, 
+            onPressed: () => workersCubit.getListOfWorkers(), 
             child: const Icon(Icons.refresh),
             );
           }

@@ -5,7 +5,6 @@ import 'package:tk_app/core/api/main_api.dart';
 import 'package:tk_app/core/error/exceptions.dart';
 import 'package:tk_app/core/error/failure.dart';
 import 'package:tk_app/core/models/done_work_model.dart';
-import 'package:tk_app/features/home_page/data/models/done_work.dart';
 import 'package:tk_app/features/home_page/data/models/tk_info.dart';
 
 import '../../../../core/api/endpoints.dart';
