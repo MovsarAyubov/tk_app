@@ -2,22 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tk_app/core/widgets/app_bar.dart';
 import 'package:tk_app/features/home_page/data/models/worker.dart';
-import 'package:tk_app/features/home_page/presentation/cubits/drop_down_button_cubit/drop_down_button_cubit.dart';
 import 'package:tk_app/features/home_page/presentation/cubits/tk_info_cubit/tk_info_cubit.dart';
 
-import '../../data/models/done_work.dart';
 import '../cubits/tk_info_cubit/tk_info_state.dart';
 import '../../data/models/done_work_row.dart';
 
 class DoneWorksHistoryPage extends StatefulWidget {
   final TKInfoCubit cubit;
-  final DropDownButtonCubit dDBCubit;
   final Worker worker;
   const DoneWorksHistoryPage(
     {
       super.key,
       required this.worker,
-      required this.dDBCubit,
       required this.cubit,
     }
     );
@@ -41,6 +37,7 @@ class _DoneWorksHistoryPageState extends State<DoneWorksHistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: () => Navigator.pop(context)),
       appBar: MyAppBar(title: "${widget.worker.firstName} ${widget.worker.name} ${widget.worker.patronymic}",),
       body: BlocBuilder<TKInfoCubit, TKInfoState>(
         bloc: widget.cubit,

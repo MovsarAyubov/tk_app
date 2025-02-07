@@ -62,7 +62,8 @@ class _OtherJobState extends State<OtherJobWidget> {
                 ),
                 ),
                 onChanged: (value) {
-                  widget.cubit.doneWork.count = Decimal.parse(value);
+                  if (value.isNotEmpty) {widget.cubit.doneWork.count = Decimal.parse(value);
+                  }
                 },
                 validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -81,10 +82,6 @@ class _OtherJobState extends State<OtherJobWidget> {
               widget.cubit.doneWork.typeOfWorkId = widget.selectedWork.id;
               widget.cubit.calculateIncome();
               await widget.cubit.addNewDoneWork();
-              if (mounted) {
-                  // ignore: use_build_context_synchronously
-                  Navigator.of(context).pop();
-                }
             }, 
             style: const  ButtonStyle(backgroundColor: WidgetStatePropertyAll(Colors.green)), 
             child: const CustomText("Сохранить запись", color: Colors.white,)

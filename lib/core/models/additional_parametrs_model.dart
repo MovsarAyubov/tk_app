@@ -8,7 +8,7 @@ class AdditionalParametrsModel {
   AdditionalParametrsModel({
     this.totalWeight = 0,
     this.weightOfPallet = 0,
-    this.weigthOfBox = 200,
+    this.weigthOfBox = 400,
     this.boxesCount = 0,
     this.cell = 0,
   });

@@ -118,15 +118,12 @@ class _RowUomWidgetState extends State<RowUomWidget> {
                   widget.cubit.doneWork.typeOfWorkId = widget.selectedWork.id;
                   widget.cubit.doneWork.rowId = item;
                   widget.cubit.doneWork.date = DateFormat('dd/MM/yyyy').format(DateTime.now());
-                  widget.cubit.doneWork.count = Decimal.parse(rowsCount.length.toString());
-                  widget.cubit.doneWork.income = Decimal.parse(widget.selectedWork.price.toString());
-                  await widget.cubit.addNewDoneWork();
+                  widget.cubit.doneWork.count = Decimal.fromInt(1);
+                  widget.cubit.calculateIncome();
+                  // widget.cubit.calculateIncomeForJoinWork();
+                  widget.cubit.addNewDoneWork();
                 }
                 rowsCount = {};
-                if (mounted) {
-                  // ignore: use_build_context_synchronously
-                  Navigator.of(context).pop();
-                }
               }, 
               style: const  ButtonStyle(backgroundColor: WidgetStatePropertyAll(Colors.green)), 
               child: const CustomText("Сохранить запись", color: Colors.white,))

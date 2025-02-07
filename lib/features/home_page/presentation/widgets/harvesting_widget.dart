@@ -24,7 +24,9 @@ class HarvestingWidget extends StatefulWidget {
   @override
   State<HarvestingWidget> createState() => _HarvestingWidgetState();
 }
-class _HarvestingWidgetState extends State<HarvestingWidget> {
+class _HarvestingWidgetState extends State<HarvestingWidget> with AutomaticKeepAliveClientMixin{
+  @override
+  bool get wantKeepAlive => true; 
 
   
 
@@ -38,7 +40,7 @@ class _HarvestingWidgetState extends State<HarvestingWidget> {
 
   void check() {
     setState(() {
-      showAdditionalParametrs = typesOfWork.contains(widget.typeOfWork.name);
+      showAdditionalParametrs = typesOfWork.contains(widget.cubit.cubit.state.selectedTypeOfWork.name);
     });
   }
 
@@ -52,12 +54,10 @@ class _HarvestingWidgetState extends State<HarvestingWidget> {
     super.didUpdateWidget(oldWidget);
   }
 
-  double calculateIncome ({required double weightOfPallet, required double weightOfBox, required double countOfBox, required double totalWeight, required int harvestingCell}) {
-    return totalWeight - (weightOfPallet + weightOfBox * countOfBox);
-  }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return showAdditionalParametrs ? Form(
       key: formKey,
       child: Column(
@@ -70,35 +70,29 @@ class _HarvestingWidgetState extends State<HarvestingWidget> {
             children: [
               Row(
                 children: [
-                  SizedBox(width: SizeConfig(context, 210).getProportionateScreenWidth, child: CustomTextField(textInputType: TextInputType.number, hintText: "Вес поддона", onChanged: (value) {widget.cubit.additionalParametrs.weightOfPallet = double.parse(value!);},)),
+                  SizedBox(width: SizeConfig(context, 210).getProportionateScreenWidth, child: CustomTextField(textInputType: TextInputType.number, hintText: "Вес поддона", onChanged: (value) {if (value != null && value.isNotEmpty) {widget.cubit.additionalParametrs.weightOfPallet = double.parse(value);}},)),
                   const CustomText("Кг.", fontSize: 20,),
                 ],
               ),
               const Divider(),
               Row(
                 children: [
-                  SizedBox(width: SizeConfig(context, 210).getProportionateScreenWidth, child: CustomTextField(textInputType: TextInputType.number, hintText: "Количесто коробок", onChanged: (value) {widget.cubit.additionalParametrs.boxesCount = double.parse(value!);},)),
+                  SizedBox(width: SizeConfig(context, 210).getProportionateScreenWidth, child: CustomTextField(textInputType: TextInputType.number, hintText: "Количесто коробок", onChanged: (value) {if (value != null && value.isNotEmpty) {widget.cubit.additionalParametrs.boxesCount = double.parse(value);}},)),
                   const CustomText("Шт.", fontSize: 20,),
                 ],
               ),
               const Divider(),
+
               Row(
                 children: [
-                  SizedBox(width: SizeConfig(context, 210).getProportionateScreenWidth, child: CustomTextField(textInputType: TextInputType.number, hintText: "Вес коробки", onChanged: (value) {widget.cubit.additionalParametrs.weigthOfBox = double.parse(value!);},)),
-                  const CustomText("Грамм", fontSize: 20,),
-                ],
-              ),
-              const Divider(),
-              Row(
-                children: [
-                  SizedBox(width: SizeConfig(context, 210).getProportionateScreenWidth, child: CustomTextField(textInputType: TextInputType.number, hintText: "Клетка сбора", onChanged: (value) {widget.cubit.doneWork.cellId = int.parse(value!);},)),
+                  SizedBox(width: SizeConfig(context, 210).getProportionateScreenWidth, child: CustomTextField(textInputType: TextInputType.number, hintText: "Клетка сбора", onChanged: (value) {if (value != null && value.isNotEmpty) {widget.cubit.doneWork.cellId = int.parse(value);}},)),
                   const CustomText("Клетка", fontSize: 20,),
                 ],
               ),
               const Divider(),
               Row(
                 children: [
-                  SizedBox(width: SizeConfig(context, 210).getProportionateScreenWidth, child: CustomTextField(textInputType: TextInputType.number, hintText: "Общий вес", onChanged: (value) {widget.cubit.additionalParametrs.totalWeight = double.parse(value!);},)),
+                  SizedBox(width: SizeConfig(context, 210).getProportionateScreenWidth, child: CustomTextField(textInputType: TextInputType.number, hintText: "Общий вес", onChanged: (value) {if (value != null && value.isNotEmpty) {widget.cubit.additionalParametrs.totalWeight = double.parse(value);}},)),
                   const CustomText("в кг.", fontSize: 20,),
                 ],
               ),
@@ -115,11 +109,7 @@ class _HarvestingWidgetState extends State<HarvestingWidget> {
                   widget.cubit.doneWork.count = widget.cubit.calculateCount();
                   widget.cubit.calculateIncomeForHarvesting();
                   await widget.cubit.addNewDoneWork();
-                  if (mounted) {
-                  // ignore: use_build_context_synchronously
-                  Navigator.of(context).pop();
                   widget.cubit.cubit.resetSelectedWork();
-                }
                 }, 
                 style: const  ButtonStyle(backgroundColor: WidgetStatePropertyAll(Colors.green)), 
                 child: const CustomText("Сохранить запись", fontSize: 18, color: Colors.white,),),

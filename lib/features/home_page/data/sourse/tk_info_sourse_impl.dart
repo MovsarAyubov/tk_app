@@ -5,7 +5,9 @@ import 'package:tk_app/core/api/main_api.dart';
 import 'package:tk_app/core/error/exceptions.dart';
 import 'package:tk_app/core/error/failure.dart';
 import 'package:tk_app/core/models/done_work_model.dart';
+import 'package:tk_app/features/home_page/data/models/count_and_income.dart';
 import 'package:tk_app/features/home_page/data/models/tk_info.dart';
+import 'package:tk_app/features/home_page/domain/entities/count_and_income.dart';
 
 import '../../../../core/api/endpoints.dart';
 import 'tk_info_sourse.dart';
@@ -61,11 +63,11 @@ class TkInfoSourseImpl implements TkInfoSourse {
           "Content-Type": "application/json",
         },
         body: json.encode({
-          "workerId" : doneWork.workerId,
-          "typeOfWorkId": doneWork.typeOfWorkId,
+          "worker_id" : doneWork.workerId,
+          "type_of_work_id": doneWork.typeOfWorkId,
           "date" : doneWork.date.toString(),
-          "cellId" : doneWork.cellId, 
-          "rowId" : doneWork.rowId,
+          "cell_id" : doneWork.cellId, 
+          "row_id" : doneWork.rowId,
           "count" : doneWork.count,
           "income" : doneWork.income,
         }),
@@ -88,6 +90,21 @@ class TkInfoSourseImpl implements TkInfoSourse {
       final jsonResponse = json.decode(response.body);
       final doneWorks = jsonResponse['items'] as List<dynamic>;
       return doneWorks.map((item) => item as Map<String, dynamic>).toList();
+    }
+  else {
+    throw ServerException();
+  }
+  }
+
+  @override
+  Future<CountAndIncome> getCountAndIncomeByDateAndCount(String date, int cellId) async {
+
+     final response = await mainApi.client.get(Uri.parse("${Endpoints.getDoneWorkByCellIdAndDate}?cellId=$cellId?date=$date")); 
+
+      if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      final item = jsonResponse['items'] as dynamic;
+      return CountAndIncomeModel.fromJson(item);
     }
   else {
     throw ServerException();

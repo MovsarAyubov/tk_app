@@ -11,5 +11,6 @@ class Endpoints {
   static String getPeriods = "http://10.250.10.99:8000/api/v1/periods";
   static String getWorkByPeriod = "http://10.250.10.99:8000/api/v1/works";
   static String fetchDoneWorksByWorkerId = "http://10.250.10.99:8000/api/v1/fetch_done_works_by_worker_id";
+  static String getDoneWorkByCellIdAndDate = "http://10.250.10.99:8000/api/v1/get_done_work_by_cellId_and_date";
   
 }

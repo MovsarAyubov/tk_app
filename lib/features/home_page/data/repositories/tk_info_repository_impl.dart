@@ -6,9 +6,9 @@ import 'package:tk_app/core/error/failure.dart';
 import 'package:tk_app/core/models/done_work_model.dart';
 import 'package:tk_app/features/home_page/data/models/tk_info.dart';
 import 'package:tk_app/features/home_page/data/sourse/tk_info_sourse.dart';
+import 'package:tk_app/features/home_page/domain/entities/count_and_income.dart';
 import 'package:tk_app/features/home_page/domain/repositories/tk_info_repository.dart';
 
-import '../models/done_work.dart';
 
 @LazySingleton(as: TkInfoRepository)
 class TkInfoRepositoryImpl implements TkInfoRepository{
@@ -59,6 +59,16 @@ class TkInfoRepositoryImpl implements TkInfoRepository{
   Future<Either<Failure, List<Map<String, dynamic>>>> getDoneWorksByWorkerId(int workerId) async {
     try {
       final response = await sourse.getDoneWorksByWorkerId(workerId);
+      return Right(response);
+    } catch (e) {
+      return const Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, CountAndIncome>> getCountAndIncomeByDateAndCellId(String date, int cellId) async {
+    try {
+      final response = await sourse.getCountAndIncomeByDateAndCount(date, cellId);
       return Right(response);
     } catch (e) {
       return const Left(ServerFailure());

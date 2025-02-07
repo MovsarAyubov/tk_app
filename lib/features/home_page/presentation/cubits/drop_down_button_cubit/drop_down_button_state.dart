@@ -11,7 +11,7 @@ class DropDownButtonState extends Equatable {
 
   const DropDownButtonState({
     required this.periods,
-    required this.selectedPeriod,
+    this.selectedPeriod = "Плодоношение",
     required this.works,
     required this.selectedTypeOfWork,
 });

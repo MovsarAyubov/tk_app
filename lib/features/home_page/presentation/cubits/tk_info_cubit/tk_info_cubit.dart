@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:tk_app/core/models/additional_parametrs_model.dart';
 import 'package:tk_app/core/models/done_work_model.dart';
-import 'package:tk_app/features/home_page/data/models/done_work.dart';
+import 'package:tk_app/features/home_page/domain/entities/count_and_income.dart';
 import 'package:tk_app/features/home_page/domain/usecases/add_done_work.dart';
 import 'package:tk_app/features/home_page/domain/usecases/get_done_works_by_worker_id.dart';
 
@@ -20,7 +20,7 @@ import 'tk_info_state.dart';
 class TKInfoCubit extends Cubit<TKInfoState> {
   DoneWorkModel doneWork = DoneWorkModel();
   final AdditionalParametrsModel additionalParametrs = AdditionalParametrsModel(); 
-  final GetDoneWorksByWorkerId getDoneWorksByWorkerIdcase;
+  final GetDoneWork getDoneWork;
   final AddDoneWork addDoneWork;
   final DropDownButtonCubit cubit;
   final GetWorkByPeriod getWorkByPeriod;
@@ -28,7 +28,7 @@ class TKInfoCubit extends Cubit<TKInfoState> {
   final GetTkInfo tkInfo;
 
   TKInfoCubit(
-    this.getDoneWorksByWorkerIdcase,
+    this.getDoneWork,
     this.addDoneWork,
     this.cubit,
     this.getWorkByPeriod,
@@ -45,7 +45,7 @@ class TKInfoCubit extends Cubit<TKInfoState> {
     emit(LoadingState());
     final response = await getPeriods();
     late final Set<String> periods;
-    response.fold((error) => emit(FailureState()), (success) {periods = success; emit(SuccesState());});
+    response.fold((error) => emit(FailureState()), (success) {periods = success;});
     cubit.getPeriods(periods.toList());
     return periods;
     }
@@ -68,7 +68,7 @@ class TKInfoCubit extends Cubit<TKInfoState> {
    }
 
    void calculateIncomeForHarvesting () {
-    String income = (cubit.state.selectedTypeOfWork.price * (additionalParametrs.totalWeight - (additionalParametrs.weightOfPallet + additionalParametrs.weigthOfBox / 1000 * additionalParametrs.boxesCount))).toString();
+    String income = (cubit.state.selectedTypeOfWork.price * (additionalParametrs.totalWeight - (additionalParametrs.weightOfPallet + additionalParametrs.weigthOfBox / 1000 * additionalParametrs.boxesCount)) / 100 * 66.6).toString();
     doneWork.income = Decimal.parse(income).round(scale: 2);
   }
 
@@ -84,13 +84,32 @@ class TKInfoCubit extends Cubit<TKInfoState> {
   }
 
   Future<List<Map<String, dynamic>>> getDoneWorksByWorkerId(int workerId) async {
-    emit(LoadingState());
     List<Map<String, dynamic>> doneWorkss = [];
-    final response = await getDoneWorksByWorkerIdcase(workerId);
+    final response = await getDoneWork(workerId);
     response.fold((value) => emit(EmptyState()), (doneWorks) {
       emit(SuccesState());
       doneWorkss = doneWorks;
     });
     return doneWorkss;
   }
+
+    Future<CountAndIncome> getCountAndIncomeByDateAndCellId(String date, int cellId) async {
+    emit(LoadingState());
+    CountAndIncome item = CountAndIncome(Decimal.fromInt(0), Decimal.fromInt(0));
+    final response = await getDoneWork.getCountAndIncome(date, cellId);
+    response.fold((value) => emit(EmptyState()), (responseItem) {
+      item = responseItem;
+      emit(SuccesState());
+    });
+    return item;
+    
+  }
+
+  void calculateIncomeForJoinWork() async {
+    final item = await getCountAndIncomeByDateAndCellId(doneWork.date, doneWork.cellId);
+    
+      doneWork.income = ((item.income / Decimal.parse("66.6")).toDecimal() * Decimal.parse("33.3"));
+      await addNewDoneWork();
+  }
+  
   }

@@ -4,7 +4,7 @@ import 'package:tk_app/features/home_page/presentation/cubits/drop_down_button_c
 
 import '../cubits/tk_info_cubit/tk_info_cubit.dart';
 
-class MyDropDownButtonOne extends StatelessWidget {
+class MyDropDownButtonOne extends StatefulWidget {
   final List<String> items;
   final TKInfoCubit cubit;
   final DropDownButtonCubit dropDownButtonCubit;
@@ -18,23 +18,34 @@ class MyDropDownButtonOne extends StatelessWidget {
   });
 
   @override
+  State<MyDropDownButtonOne> createState() => _MyDropDownButtonOneState();
+}
+
+class _MyDropDownButtonOneState extends State<MyDropDownButtonOne> with AutomaticKeepAliveClientMixin{
+  
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Padding(
       padding: const EdgeInsets.all(8),
       child: DropdownButton(
         isExpanded: true,
-        value: dropDownButtonCubit.state.selectedPeriod == "" ? "Выброска" : dropDownButtonCubit.state.selectedPeriod,
+        value: widget.dropDownButtonCubit.state.selectedPeriod == "" ? "Выброска" : widget.dropDownButtonCubit.state.selectedPeriod,
         elevation: 16,
-        items: items.map<DropdownMenuItem<String>>((String value) {
+        items: widget.items.map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
             child: Text(value, overflow: TextOverflow.ellipsis,),
           );
         }).toList(),
         onChanged: (value) {
-          dropDownButtonCubit.selectPeriod(value!);
-          cubit.fetchWorkByPeriod(value);
+          widget.dropDownButtonCubit.selectPeriod(value!);
+          widget.cubit.fetchWorkByPeriod(value);
         }),
     );
   }
+  
+  @override
+  bool get wantKeepAlive => true;
 }

@@ -27,32 +27,38 @@ class DoneWorkPage extends StatefulWidget {
   State<DoneWorkPage> createState() => _DoneWorkPageState();
 }
 
-class _DoneWorkPageState extends State<DoneWorkPage> {
+class _DoneWorkPageState extends State<DoneWorkPage> with AutomaticKeepAliveClientMixin<DoneWorkPage>{
+  @override
+  bool get wantKeepAlive => true;
   
   final TKInfoCubit cubit = getIt<TKInfoCubit>();
   final DropDownButtonCubit dropDownButtonCubit = getIt<DropDownButtonCubit>();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  get periods => dropDownButtonCubit.state.periods;
-  get works => dropDownButtonCubit.state.works.map((item) => item.name).toList();
+  List<String> get periods => dropDownButtonCubit.state.periods;
 
   @override
   void initState() {
-    cubit.fetchPeriods();
+    cubit.fetchPeriods().then((items) => cubit.fetchWorkByPeriod(items.toList()[2]));
+    
     super.initState();
   }
   
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TKInfoCubit, TKInfoState>(
+    super.build(context);
+    return Scaffold(
+            floatingActionButton: FloatingActionButton(onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (_) => DoneWorksHistoryPage(cubit: cubit, worker: widget.worker,)));}, child: const Icon(Icons.history),),
+            resizeToAvoidBottomInset : true,
+            appBar: MyAppBar(title: "${widget.worker.firstName} ${widget.worker.name} ${widget.worker.patronymic}",),
+            body: BlocBuilder<TKInfoCubit, TKInfoState>(
+              buildWhen: (previous, current) {
+                return current != previous;
+              },
       bloc: cubit,
       builder: (
       context, state) {
         if(state is SuccesState) {
-          return  Scaffold(
-            floatingActionButton: FloatingActionButton(onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (_) => DoneWorksHistoryPage(dDBCubit: dropDownButtonCubit, cubit: cubit, worker: widget.worker,)));}, child: const Icon(Icons.history),),
-            resizeToAvoidBottomInset : true,
-            appBar: MyAppBar(title: "${widget.worker.firstName} ${widget.worker.name} ${widget.worker.patronymic}",),
-            body: SingleChildScrollView(
+          return  SingleChildScrollView(
               reverse: true,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
@@ -60,48 +66,37 @@ class _DoneWorkPageState extends State<DoneWorkPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      children: [
-                        BlocBuilder<DropDownButtonCubit, DropDownButtonState>(
-                          bloc: dropDownButtonCubit,
-                          builder: (context, state) {
-                            return MyDropDownButtonOne(dropDownButtonCubit: dropDownButtonCubit, cubit: cubit, items: periods as List<String>);
-                          }),
-                          BlocBuilder<DropDownButtonCubit, DropDownButtonState>(
-                          bloc: dropDownButtonCubit,
-                          builder: (context, state) {
-                            if(state.selectedPeriod.isNotEmpty) {
-                              return Form(
-                                key: formKey,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  MyDropDownButtonTwo(works: works, cubit: dropDownButtonCubit),
-                                  CustomText("Стоимость работы: ${state.selectedTypeOfWork.price.toString()} руб.", fontSize: 18,), 
-                                  const Divider(),
-                                  CustomText("Единица измерения: ${state.selectedTypeOfWork.uom.toString()}", fontSize: 18,), 
-                                  const Divider(),
-                                  HarvestingWidget(worker: widget.worker, cubit: cubit, typeOfWork: state.selectedTypeOfWork),
-                                  RowUomWidget(worker: widget.worker, selectedWork: state.selectedTypeOfWork, cubit: cubit,),
-                                  OtherJobWidget(worker: widget.worker, selectedWork: state.selectedTypeOfWork, cubit: cubit),
-                                  const Divider(),
-                                  ],
-                                ),
-                              );
-                            }
-                            else {
-                              return const SizedBox();
-                            }
-                          })                           
-                      ],
-                    ),
+                    MyDropDownButtonOne(dropDownButtonCubit: dropDownButtonCubit, cubit: cubit, items: periods),
+                    MyDropDownButtonTwo(key: const ValueKey('myDropDownButtonTwo'), works: dropDownButtonCubit.state.works, cubit: dropDownButtonCubit),
+                    BlocBuilder<DropDownButtonCubit, DropDownButtonState>(
+                      bloc: dropDownButtonCubit,
+                      builder: (context, state) {
+                        return Column(
+                          children: [
+                            Form(
+                            key: formKey,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomText("Стоимость работы: ${state.selectedTypeOfWork.price.toString()} руб.", fontSize: 18,), 
+                              const Divider(),
+                              CustomText("Единица измерения: ${state.selectedTypeOfWork.uom.toString()}", fontSize: 18,), 
+                              const Divider(),
+                              HarvestingWidget(worker: widget.worker, cubit: cubit, typeOfWork: state.selectedTypeOfWork),
+                              RowUomWidget(worker: widget.worker, selectedWork: state.selectedTypeOfWork, cubit: cubit,),
+                              OtherJobWidget(worker: widget.worker, selectedWork: state.selectedTypeOfWork, cubit: cubit),
+                              const Divider(),
+                              ],
+                            ),
+                            ),
+                          ],
+                        );
+                      }),
                     
                   ],
                 ),
               ),
-            ),
-          );
-            
+            );  
         }
         else if (state is EmptyState) {
           return const Scaffold(body: Center(child: CustomText("Данные отсутствуют"),));
@@ -113,6 +108,6 @@ class _DoneWorkPageState extends State<DoneWorkPage> {
           return const Scaffold(body: Center(child: CustomText("Сервер недоступен"),));
         }
              }
-      );
+      ),);
+    }
   }
-}

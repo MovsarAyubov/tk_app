@@ -61,8 +61,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i609.TkInfoSourseImpl(gh<_i767.MainApi>()));
     gh.lazySingleton<_i180.TkInfoRepository>(
         () => _i304.TkInfoRepositoryImpl(gh<_i136.TkInfoSourse>()));
-    gh.lazySingleton<_i122.GetDoneWorksByWorkerId>(
-        () => _i122.GetDoneWorksByWorkerId(gh<_i180.TkInfoRepository>()));
+    gh.lazySingleton<_i122.GetDoneWork>(
+        () => _i122.GetDoneWork(gh<_i180.TkInfoRepository>()));
     gh.lazySingleton<_i63.AddDoneWork>(
         () => _i63.AddDoneWork(tkInfoRepository: gh<_i180.TkInfoRepository>()));
     gh.lazySingleton<_i672.GetPeriods>(
@@ -79,18 +79,18 @@ extension GetItInjectableX on _i174.GetIt {
         _i495.DeleteWorker(workersRepository: gh<_i705.WorkersRepository>()));
     gh.lazySingleton<_i27.GetAllWorkers>(() =>
         _i27.GetAllWorkers(workersRepository: gh<_i705.WorkersRepository>()));
+    gh.lazySingleton<_i218.WorkersCubit>(() => _i218.WorkersCubit(
+          getAllWorkers: gh<_i27.GetAllWorkers>(),
+          addNewWorker: gh<_i998.AddNewWorker>(),
+          deleteWorker: gh<_i495.DeleteWorker>(),
+        ));
     gh.lazySingleton<_i912.TKInfoCubit>(() => _i912.TKInfoCubit(
-          gh<_i122.GetDoneWorksByWorkerId>(),
+          gh<_i122.GetDoneWork>(),
           gh<_i63.AddDoneWork>(),
           gh<_i487.DropDownButtonCubit>(),
           gh<_i885.GetWorkByPeriod>(),
           gh<_i672.GetPeriods>(),
           gh<_i301.GetTkInfo>(),
-        ));
-    gh.lazySingleton<_i218.WorkersCubit>(() => _i218.WorkersCubit(
-          getAllWorkers: gh<_i27.GetAllWorkers>(),
-          addNewWorker: gh<_i998.AddNewWorker>(),
-          deleteWorker: gh<_i495.DeleteWorker>(),
         ));
     return this;
   }
