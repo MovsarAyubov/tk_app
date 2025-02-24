@@ -19,7 +19,7 @@ import 'tk_info_state.dart';
 @LazySingleton()
 class TKInfoCubit extends Cubit<TKInfoState> {
   DoneWorkModel doneWork = DoneWorkModel();
-  final AdditionalParametrsModel additionalParametrs = AdditionalParametrsModel(); 
+  AdditionalParametrsModel additionalParametrs = AdditionalParametrsModel(); 
   final GetDoneWork getDoneWork;
   final AddDoneWork addDoneWork;
   final DropDownButtonCubit cubit;
@@ -67,14 +67,41 @@ class TKInfoCubit extends Cubit<TKInfoState> {
 
    }
 
-   void calculateIncomeForHarvesting () {
-    String income = (cubit.state.selectedTypeOfWork.price * (additionalParametrs.totalWeight - (additionalParametrs.weightOfPallet + additionalParametrs.weigthOfBox / 1000 * additionalParametrs.boxesCount)) / 100 * 66.6).toString();
+   double get totalWeight => additionalParametrs.secondGradeWeight + additionalParametrs.firstGradeWeight + additionalParametrs.thirdGradeWeight + additionalParametrs.weightOfPallet;
+
+   String  calculateIncomeForHarvesting (double price, double harvestCount, double boxesCount) {
+    return (calculateCount(harvestCount, boxesCount) * price).toString();
+   }
+
+   Future<void> saveDoneWork () async {
+    const firstGradePrice = 6.0;
+    const secondGradePrice = 2.0;
+    const thirdGradePrice = 1.5;
+    String income = calculateIncomeForHarvesting(firstGradePrice, additionalParametrs.firstGradeWeight, additionalParametrs.countBoxesFirstGrade);
     doneWork.income = Decimal.parse(income).round(scale: 2);
+    doneWork.cellId = additionalParametrs.cell;
+    String count = calculateCount(additionalParametrs.firstGradeWeight, additionalParametrs.countBoxesFirstGrade).toString();
+    doneWork.count = Decimal.parse(count);
+    doneWork.typeOfWorkId = 47;
+    await addDoneWork(doneWork);
+
+    income = calculateIncomeForHarvesting(secondGradePrice, additionalParametrs.secondGradeWeight, additionalParametrs.countBoxesSecondGrade);
+    doneWork.income = Decimal.parse(income).round(scale: 2);
+    count = calculateCount(additionalParametrs.secondGradeWeight, additionalParametrs.countBoxesSecondGrade).toString();
+    doneWork.count = Decimal.parse(count);
+    doneWork.typeOfWorkId = 48;
+    await addDoneWork(doneWork);
+
+    income = calculateIncomeForHarvesting(thirdGradePrice, additionalParametrs.secondGradeWeight, additionalParametrs.countBoxesThirdGrade);
+    doneWork.income = Decimal.parse(income).round(scale: 2);
+    count = calculateCount(additionalParametrs.thirdGradeWeight, additionalParametrs.countBoxesThirdGrade).toString();
+    doneWork.count = Decimal.parse(count);
+    doneWork.typeOfWorkId = 49;
+    await addDoneWork(doneWork);
   }
 
-  Decimal calculateCount () {
-    Decimal count = Decimal.parse((additionalParametrs.totalWeight - (additionalParametrs.weightOfPallet + additionalParametrs.weigthOfBox / 1000 * additionalParametrs.boxesCount)).toString());
-    return count.round(scale: 2);
+  double calculateCount(double count, double boxesCount) {
+    return (count - (boxesCount * additionalParametrs.weigthOfBox));
   }
 
   void calculateIncome() {

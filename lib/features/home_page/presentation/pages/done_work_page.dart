@@ -67,7 +67,7 @@ class _DoneWorkPageState extends State<DoneWorkPage> with AutomaticKeepAliveClie
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     MyDropDownButtonOne(dropDownButtonCubit: dropDownButtonCubit, cubit: cubit, items: periods),
-                    MyDropDownButtonTwo(key: const ValueKey('myDropDownButtonTwo'), works: dropDownButtonCubit.state.works, cubit: dropDownButtonCubit),
+                    MyDropDownButtonTwo(tkInfoCubit: cubit, key: const ValueKey('myDropDownButtonTwo'), works: dropDownButtonCubit.state.works, cubit: dropDownButtonCubit),
                     BlocBuilder<DropDownButtonCubit, DropDownButtonState>(
                       bloc: dropDownButtonCubit,
                       builder: (context, state) {

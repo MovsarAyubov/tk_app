@@ -1,7 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:tk_app/core/models/done_work_model.dart';
 import 'package:tk_app/features/home_page/presentation/cubits/drop_down_button_cubit/drop_down_button_cubit.dart';
 
+import '../../../../core/models/additional_parametrs_model.dart';
 import '../cubits/tk_info_cubit/tk_info_cubit.dart';
 
 class MyDropDownButtonOne extends StatefulWidget {
@@ -39,9 +41,11 @@ class _MyDropDownButtonOneState extends State<MyDropDownButtonOne> with Automati
             child: Text(value, overflow: TextOverflow.ellipsis,),
           );
         }).toList(),
-        onChanged: (value) {
+        onChanged: (value) async {
           widget.dropDownButtonCubit.selectPeriod(value!);
-          widget.cubit.fetchWorkByPeriod(value);
+          await widget.cubit.fetchWorkByPeriod(value);
+          widget.cubit.doneWork = DoneWorkModel();
+          widget.cubit.additionalParametrs = AdditionalParametrsModel();
         }),
     );
   }

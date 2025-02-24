@@ -17,7 +17,7 @@ class WorkersSourseImpl implements WorkersSourse{
   Future<void> addNewWorker({required String name, required String firstName, required String patronomic}) async {
 
       final response = await mainApi.client.post(
-        Uri.parse(Endpoints.newWorker2),
+        Uri.parse(Endpoints.newWorker),
         headers: {
           "Content-Type": "application/json",
         },
@@ -40,7 +40,7 @@ class WorkersSourseImpl implements WorkersSourse{
   Future<List<Worker>> getWorkers() async {
 
       final response = await mainApi.client.get(
-        Uri.parse(Endpoints.allWorkers2)
+        Uri.parse(Endpoints.allWorkers)
       );
       
       if (response.statusCode == 200) {
@@ -59,7 +59,7 @@ class WorkersSourseImpl implements WorkersSourse{
   @override
   Future<void> deleteWorker({required int id}) async{
     await mainApi.client.delete(
-      Uri.parse(Endpoints.deleteWorker2),
+      Uri.parse(Endpoints.deleteWorker),
       headers: {
           "Content-Type": "application/json",
         },
